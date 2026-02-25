@@ -41,26 +41,25 @@ const translations = {
 
         // Skill Categories & Items
         "skills.cat.languages": "Ngôn ngữ",
+        "skills.cat.backend": "Backend",
         "skills.cat.database": "Cơ sở dữ liệu",
-        "skills.cat.frameworks": "Frameworks",
-        "skills.cat.tools": "Công cụ và công nghệ",
+        "skills.cat.tools": "Công cụ",
         "skills.cat.others": "Khác",
 
         // Skill Items (Text that needs translation if any, most are proper nouns)
         "skills.item.java": "Java",
         "skills.item.csharp": "C#",
+        "skills.item.javascript": "JavaScript/TypeScript",
         "skills.item.htmlcss": "HTML & CSS",
-        "skills.item.nextjs": "Next.JS",
+        "skills.item.dotnet": ".NET (Winforms)",
+        "skills.item.restapi": "RESTful API",
         "skills.item.mysql": "MySQL",
         "skills.item.mssql": "MS SQL Server",
-        "skills.item.springboot": "Spring boot",
-        "skills.item.winforms": "Winforms",
-        "skills.item.tailwindcss": "Tailwind CSS",
-        "skills.item.restapi": "RESTful APIs",
         "skills.item.git": "Git",
-        "skills.item.vscode": "Visual Studio Code",
-        "skills.item.antigravity": "Antigravity",
-        "skills.item.aicoding": "AI coding",
+        "skills.item.vscode": "VS Code",
+        "skills.item.postman": "Postman",
+        "skills.item.nextjs": "NextJS",
+        "skills.item.tailwindcss": "Tailwind CSS",
 
         // Projects
         "projects.title": "cá nhân",
@@ -116,26 +115,25 @@ const translations = {
 
         // Skill Categories & Items
         "skills.cat.languages": "Languages",
+        "skills.cat.backend": "Backend",
         "skills.cat.database": "Databases",
-        "skills.cat.frameworks": "Frameworks",
-        "skills.cat.tools": "Tools & Technologies",
+        "skills.cat.tools": "Tools",
         "skills.cat.others": "Others",
 
         // Skill Items
         "skills.item.java": "Java",
         "skills.item.csharp": "C#",
+        "skills.item.javascript": "JavaScript/TypeScript",
         "skills.item.htmlcss": "HTML & CSS",
-        "skills.item.nextjs": "Next.JS",
+        "skills.item.dotnet": ".NET (Winforms)",
+        "skills.item.restapi": "RESTful API",
         "skills.item.mysql": "MySQL",
         "skills.item.mssql": "MS SQL Server",
-        "skills.item.springboot": "Spring boot",
-        "skills.item.winforms": "Winforms",
-        "skills.item.tailwindcss": "Tailwind CSS",
-        "skills.item.restapi": "RESTful APIs",
         "skills.item.git": "Git",
-        "skills.item.vscode": "Visual Studio Code",
-        "skills.item.antigravity": "Antigravity",
-        "skills.item.aicoding": "AI coding",
+        "skills.item.vscode": "VS Code",
+        "skills.item.postman": "Postman",
+        "skills.item.nextjs": "NextJS",
+        "skills.item.tailwindcss": "Tailwind CSS",
 
         // Projects
         "projects.title": "Projects",

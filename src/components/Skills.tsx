@@ -13,10 +13,18 @@ export const Skills = () => {
             items: [
                 t("skills.item.java"),
                 t("skills.item.csharp"),
+                t("skills.item.javascript"),
                 t("skills.item.htmlcss"),
-                t("skills.item.nextjs"),
             ],
             icon: Code,
+        },
+        {
+            category: t("skills.cat.backend"),
+            items: [
+                t("skills.item.dotnet"),
+                t("skills.item.restapi"),
+            ],
+            icon: Server,
         },
         {
             category: t("skills.cat.database"),
@@ -27,28 +35,19 @@ export const Skills = () => {
             icon: Database,
         },
         {
-            category: t("skills.cat.frameworks"),
-            items: [
-                t("skills.item.springboot"),
-                t("skills.item.winforms"),
-                t("skills.item.tailwindcss"),
-            ],
-            icon: Cpu, // Changed icon to fit frameworks better or reuse Cpu/Server
-        },
-        {
             category: t("skills.cat.tools"),
             items: [
-                t("skills.item.restapi"),
                 t("skills.item.git"),
                 t("skills.item.vscode"),
-                t("skills.item.antigravity"),
+                t("skills.item.postman"),
             ],
             icon: Terminal,
         },
         {
             category: t("skills.cat.others"),
             items: [
-                t("skills.item.aicoding"),
+                t("skills.item.nextjs"),
+                t("skills.item.tailwindcss"),
             ],
             icon: Layout, // Generic icon for others
         },
