@@ -23,14 +23,15 @@ export const Skills = () => {
             items: [
                 t("skills.item.dotnet"),
                 t("skills.item.restapi"),
+                t("skills.item.springboot"),
             ],
             icon: Server,
         },
         {
             category: t("skills.cat.database"),
             items: [
-                t("skills.item.mysql"),
                 t("skills.item.mssql"),
+                t("skills.item.mysql"),
             ],
             icon: Database,
         },

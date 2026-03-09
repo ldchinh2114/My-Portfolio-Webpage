@@ -6,15 +6,6 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const projects = [
     {
-        titleKey: "projects.task.title",
-        descKey: "projects.task.desc",
-        tags: ["Java", "Spring Boot", "MySQL"],
-        color: "from-green-500 to-emerald-700",
-        image: "/task-management.jpg",
-        github: "https://github.com/Liqing1124/TaskManagement",
-        demo: "#"
-    },
-    {
         titleKey: "projects.recorder.title",
         descKey: "projects.recorder.desc",
         tags: ["C#", ".NET", "Windows API"],
