@@ -55,6 +55,14 @@ export const Contact = () => {
                             Facebook
                         </a>
                         <a
+                            href="https://zalo.me/84707166199"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-gray-950 transition-colors"
+                        >
+                            Zalo
+                        </a>
+                        <a
                             href="mailto:chinhle6030@gmail.com"
                             className="hover:text-gray-950 transition-colors"
                         >
