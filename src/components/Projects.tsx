@@ -22,6 +22,15 @@ const projects = [
         image: "/text-extractor.jpg",
         github: "https://github.com/ldchinh2114/Text-Extractor",
         demo: "#"
+    },
+    {
+        titleKey: "projects.multitool.title",
+        descKey: "projects.multitool.desc",
+        tags: ["Next.js", "React", "Tailwind CSS"],
+        color: "from-green-500 to-teal-700",
+        image: "/multitool.jpg",
+        github: "https://github.com/ldchinh2114/multitool",
+        demo: "https://ldchinh-multitool.vercel.app/"
     }
 ];
 

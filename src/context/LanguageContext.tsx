@@ -84,6 +84,8 @@ const translations = {
         "projects.recorder.desc": "Công cụ tự động ghi và phát lại các tương tác của người dùng, hữu ích cho kiểm thử tự động và tạo macro.",
         "projects.extractor.title": "Text Extractor",
         "projects.extractor.desc": "Công cụ mạnh mẽ giúp trích xuất văn bản từ hình ảnh hoặc vùng chụp trên màn hình. Hỗ trợ phím tắt PrtSc và đa ngôn ngữ.",
+        "projects.multitool.title": "MultiTool",
+        "projects.multitool.desc": "Bộ công cụ đa năng được xây dựng với Next.js, React và Tailwind CSS.",
     },
     en: {
         // Navbar
@@ -163,6 +165,8 @@ const translations = {
         "projects.recorder.desc": "Automated tool for recording and replaying user interactions, useful for automated testing and macro creation.",
         "projects.extractor.title": "Text Extractor",
         "projects.extractor.desc": "A powerful tool to extract text from images or screen captures. Supports PrtSc shortcut and multi-language recognition.",
+        "projects.multitool.title": "MultiTool",
+        "projects.multitool.desc": "A multi-purpose tool built with Next.js, React, and Tailwind CSS.",
     },
 };
 
