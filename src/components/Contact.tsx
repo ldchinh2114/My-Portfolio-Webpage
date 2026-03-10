@@ -39,7 +39,7 @@ export const Contact = () => {
 
                     <div className="mt-20 flex justify-center flex-wrap gap-10 md:gap-16 font-bold uppercase text-xs tracking-[0.2em] text-gray-500">
                         <a
-                            href="https://github.com/Liqing1124"
+                            href="https://github.com/ldchinh2114"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-950 transition-colors"

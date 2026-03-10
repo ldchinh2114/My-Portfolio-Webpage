@@ -11,7 +11,7 @@ const projects = [
         tags: ["C#", ".NET", "Windows API"],
         color: "from-purple-500 to-indigo-700",
         image: "/action-recorder.jpg",
-        github: "https://github.com/Liqing1124/User-Action-Recorder",
+        github: "https://github.com/ldchinh2114/User-Action-Recorder",
         demo: "#"
     },
     {
@@ -20,7 +20,7 @@ const projects = [
         tags: ["C#", "Winforms"],
         color: "from-blue-500 to-cyan-700",
         image: "/text-extractor.jpg",
-        github: "https://github.com/Liqing1124/Text-Extractor",
+        github: "https://github.com/ldchinh2114/Text-Extractor",
         demo: "#"
     }
 ];
