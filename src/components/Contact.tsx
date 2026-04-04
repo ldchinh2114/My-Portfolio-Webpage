@@ -63,6 +63,14 @@ export const Contact = () => {
                             Zalo
                         </a>
                         <a
+                            href="https://www.linkedin.com/in/ldchinh2114"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-gray-950 transition-colors"
+                        >
+                            LinkedIn
+                        </a>
+                        <a
                             href="mailto:chinhle6030@gmail.com"
                             className="hover:text-gray-950 transition-colors"
                         >
