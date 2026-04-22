@@ -8,7 +8,7 @@ export const Hero = () => {
     const { t } = useLanguage();
 
     return (
-        <section className="relative pt-40 pb-20 px-6 max-w-6xl mx-auto overflow-hidden">
+        <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 px-4 md:px-6 max-w-6xl mx-auto overflow-hidden">
             {/* Background Elements - Subtle */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
                 <motion.div
@@ -33,13 +33,13 @@ export const Hero = () => {
                     {t("hero.badge")}
                 </motion.span>
 
-                <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-extrabold tracking-tight leading-[0.85] mb-10 text-gray-950 transform-gpu">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.9] md:leading-[0.85] mb-6 md:mb-10 text-gray-950 transform-gpu">
                     <span className="block">{t("hero.title")}</span>
                     <span className="text-gray-400 block">{t("hero.subtitle")}</span>
                     <span className="block">{t("hero.title2")}</span>
                 </h1>
 
-                <p className="text-xl md:text-2xl text-gray-500 max-w-2xl leading-relaxed mb-12 font-medium transform-gpu">
+                <p className="text-base md:text-xl lg:text-2xl text-gray-500 max-w-2xl leading-relaxed mb-8 md:12 font-medium transform-gpu">
                     {t("hero.description")}
                 </p>
 
@@ -47,18 +47,18 @@ export const Hero = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="flex flex-wrap gap-6"
+                    className="flex flex-col sm:flex-row gap-4 sm:gap-6"
                 >
                     <a
                         href="#projects"
-                        className="px-10 py-4 rounded-full bg-gray-950 text-white font-semibold hover:bg-gray-800 transition-all flex items-center justify-center gap-2 group transform-gpu"
+                        className="px-8 md:px-10 py-3 md:py-4 rounded-full bg-gray-950 text-white font-semibold hover:bg-gray-800 transition-all flex items-center justify-center gap-2 group transform-gpu text-center"
                     >
                         {t("hero.viewProjects")}
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a
                         href="#contact"
-                        className="px-10 py-4 rounded-full border border-gray-200 text-gray-900 font-semibold hover:bg-gray-50 transition-all backdrop-blur-sm transform-gpu"
+                        className="px-8 md:px-10 py-3 md:py-4 rounded-full border border-gray-200 text-gray-900 font-semibold hover:bg-gray-50 transition-all backdrop-blur-sm transform-gpu text-center"
                     >
                         {t("hero.contactMe")}
                     </a>
