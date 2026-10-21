@@ -29,7 +29,7 @@ changing one copy of a duplicated value.
 | Social links (cards) | `Contact.tsx` → `socials` | hardcoded |
 | Social links (icons) | `Footer.tsx` → `socials` | **duplicate of the above** |
 | Footer credit line | `contact.footer` | translated |
-| Notes (title, summary, body, tags, language) | `content/notes/<slug>.md` | frontmatter + Markdown |
+| Notes (title, summary, body, tags, downloads per language) | `content/notes/<slug>.vi.md` + `<slug>.en.md` | frontmatter + Markdown |
 | Note download files | `public/downloads/*` referenced from note frontmatter | static files |
 | Live site link | `README.md` | single line |
 
@@ -202,22 +202,34 @@ Notes:
 
 ## 10. Notes
 
-A note is one Markdown file in `content/notes/`. The filename is the URL slug:
-`content/notes/my-note.md` → `/notes/my-note`. Use lowercase letters, digits,
-and hyphens. Prefix a filename with `_` to keep it out of the build (draft).
+A published note is **two Markdown files that share a slug**: a Vietnamese one
+and an English one.
 
-### Template
+```
+content/notes/my-note.vi.md  →  /notes/my-note  (Vietnamese)
+content/notes/my-note.en.md  →  /notes/my-note  (English)
+```
+
+The slug (`my-note`) is the URL. Use lowercase letters, digits, and hyphens.
+The `.vi` / `.en` suffix decides which language the file is, and the note page
+shows a VI/EN switch that swaps the title, summary, tags, downloads and body.
+Both files must exist; a note with only one language fails the build. Prefix
+both filenames with `_` to keep a note out of the build (draft).
+
+### Frontmatter
+
+Each file carries the same `date`, and its own language-specific `title`,
+`summary`, `tags`, `downloads` and body:
 
 ```md
 ---
-title: "Vì sao mình thêm trang Notes"
+title: "A short, specific title"
 date: "2026-10-21"
 summary: "One sentence shown on the list card and in search results."
-language: "vi"
 tags: ["Notes", "Markdown"]
 downloads:
-  - label: "Mẫu ghi chú Markdown"
-    href: "/downloads/note-template.md"
+  - label: "Article writing guideline"
+    href: "/downloads/article-writing-guideline.en.md"
     meta: "MD"
 ---
 
@@ -226,44 +238,52 @@ Body starts here. **Markdown** and GFM tables/lists are supported.
 
 Frontmatter rules:
 
-- `title` and `date` are required. The date must be `YYYY-MM-DD`; the build fails
-  with a clear `[notes]` error otherwise, so a broken note cannot ship silently.
+- `title` and `date` are required in both files. The date must be `YYYY-MM-DD`;
+  the build fails with a clear `[notes]` error otherwise, so a broken note
+  cannot ship silently.
+- The two files must declare the **same `date`**. A mismatch fails the build.
 - `summary` is optional but should be one sentence (12–25 words). It becomes the
   meta description.
-- `language` is `"vi"` or `"en"`. It tags the note only; the page UI still
-  follows the site toggle. Do not write the same note twice unless you want two
-  separate entries.
-- `tags` are technology/topic names, not translated.
-- `downloads` is optional. Each entry needs `label` and `href`; `meta` is the
-  small line under the label (e.g. `"ZIP"`, `"1.2 MB"`). `href` must be a
-  `/`-rooted path or an `https://` URL. Drop an entry rather than pointing at a
-  file that is not committed.
-- Sort order is automatic: newest `date` first. Ties break by title.
+- There is no `language` key: the `.vi.md` / `.en.md` suffix is authoritative.
+  A leftover `language` key that disagrees with the filename fails the build.
+- `tags` are technology/topic names; translate them only when the language has
+  an established term.
+- `downloads` is optional and lives in each language file, so labels can be
+  translated while `href`s point at the same file. Each entry needs `label` and
+  `href`; `meta` is the small line under the label (e.g. `"ZIP"`, `"1.2 MB"`).
+  `href` must be a `/`-rooted path or an `https://` URL. Drop an entry rather
+  than pointing at a file that is not committed.
+- Sort order is automatic: newest `date` first. Ties break by the Vietnamese
+  title.
 
 ### Downloads
 
 1. Put the file in `public/downloads/`.
 2. For a folder, zip it first and commit the `.zip`; a folder cannot be
    downloaded as a folder.
-3. Reference it as `/downloads/<file>` in the note frontmatter.
+3. Reference it as `/downloads/<file>` in each note file's frontmatter.
 4. The link renders with a `download` attribute. External `https://` links open
    in a new tab instead.
-5. The downloads card always renders after the Markdown body, above the
-   "All notes" footer link.
+5. The downloads card renders after the Markdown body, above the "All notes"
+   footer link, and switches with the note language.
 
-`public/downloads/note-template.md` is a ready-to-copy example. Keep the starter
-note (`vi-sao-minh-them-trang-notes.md`) or delete it once you have real posts.
+`public/downloads/article-writing-guideline.vi.md` and
+`article-writing-guideline.en.md` are the downloadable writing guides, one per
+language. They document the structure and rules above; they are references, not
+copy-paste templates. Keep the starter note
+(`vi-sao-minh-them-trang-notes.*.md`) or delete the pair once you have real posts.
 
 ### Publishing
 
-There is no editor or database: edit the file, commit, and push. Vercel rebuilds
-the static pages. `npm run build` regenerates every `/notes/<slug>` page via
-`generateStaticParams`; a new file appears on the next deploy.
+There is no editor or database: edit the two files, commit, and push. Vercel
+rebuilds the static pages. `npm run build` regenerates every `/notes/<slug>`
+page via `generateStaticParams`; a new pair appears on the next deploy.
 
 Checklist for a note:
 
-- [ ] Filename is a safe slug and `.md`.
-- [ ] Frontmatter parses (`date` valid, `language` `vi`/`en`).
-- [ ] `/notes` shows the card; `/notes/<slug>` renders the body.
+- [ ] Both `<slug>.vi.md` and `<slug>.en.md` exist with a safe slug.
+- [ ] Frontmatter parses in both files (`date` valid and identical).
+- [ ] `/notes` shows the card in both UI languages.
+- [ ] `/notes/<slug>` renders the body in both languages; the switch swaps
+      title, summary, tags, downloads and body.
 - [ ] Every `downloads.href` returns 200 and the file is in `public/downloads/`.
-- [ ] Both UI languages checked; the note itself stays in its authored language.

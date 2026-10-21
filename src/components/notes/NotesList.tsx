@@ -52,83 +52,87 @@ export const NotesList = ({ notes }: { notes: NoteSummary[] }) => {
                 </motion.div>
             ) : (
                 <div className="grid grid-cols-1 gap-5">
-                    {notes.map((note, index) => (
-                        <motion.article
-                            key={note.slug}
-                            initial={{ opacity: 0, y: 24 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-60px" }}
-                            transition={{ delay: index * 0.08, duration: 0.6 }}
-                            className="h-full"
-                        >
-                            <Link
-                                href={`/notes/${note.slug}`}
-                                className="group flex h-full flex-col glass-card rounded-2xl p-6 hover:border-primary/45 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    {notes.map((note, index) => {
+                        const translation = note.translations[language];
+
+                        return (
+                            <motion.article
+                                key={note.slug}
+                                initial={{ opacity: 0, y: 24 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-60px" }}
+                                transition={{ delay: index * 0.08, duration: 0.6 }}
+                                className="h-full"
                             >
-                                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted mb-4">
-                                    <span className="chip px-2.5 py-1 font-semibold">
-                                        {t(`notes.lang.${note.language}`)}
-                                    </span>
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <CalendarDays size={13} />
-                                        <time dateTime={note.date}>
-                                            {formatNoteDate(note.date, language)}
-                                        </time>
-                                    </span>
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <Clock3 size={13} />
-                                        {note.readingMinutes} {t("notes.minRead")}
-                                    </span>
-                                </div>
-
-                                <h2 className="text-xl md:text-2xl font-bold text-ink group-hover:text-primary transition-colors">
-                                    {note.title}
-                                </h2>
-
-                                {note.summary && (
-                                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                                        {note.summary}
-                                    </p>
-                                )}
-
-                                {note.tags.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 mt-4">
-                                        {note.tags.map((tag) => (
-                                            <span
-                                                key={tag}
-                                                className="px-2.5 py-1 text-xs font-semibold rounded-md border border-line bg-chip text-ink-soft"
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-
-                                <div className="mt-auto pt-6 flex items-center justify-between gap-4">
-                                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
-                                        {t("notes.readNote")}
-                                        <ArrowRight
-                                            size={15}
-                                            className="transition-transform duration-300 group-hover:translate-x-1"
-                                        />
-                                    </span>
-                                    {note.downloads.length > 0 && (
-                                        <span
-                                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-soft"
-                                        >
-                                            <Download size={14} />
-                                            {note.downloads.length}{" "}
-                                            {t(
-                                                note.downloads.length === 1
-                                                    ? "notes.fileOne"
-                                                    : "notes.file",
-                                            )}
+                                <Link
+                                    href={`/notes/${note.slug}`}
+                                    className="group flex h-full flex-col glass-card rounded-2xl p-6 hover:border-primary/45 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                                >
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted mb-4">
+                                        <span className="chip px-2.5 py-1 font-semibold">
+                                            {t("notes.bilingual")}
                                         </span>
+                                        <span className="inline-flex items-center gap-1.5">
+                                            <CalendarDays size={13} />
+                                            <time dateTime={note.date}>
+                                                {formatNoteDate(note.date, language)}
+                                            </time>
+                                        </span>
+                                        <span className="inline-flex items-center gap-1.5">
+                                            <Clock3 size={13} />
+                                            {translation.readingMinutes} {t("notes.minRead")}
+                                        </span>
+                                    </div>
+
+                                    <h2 className="text-xl md:text-2xl font-bold text-ink group-hover:text-primary transition-colors">
+                                        {translation.title}
+                                    </h2>
+
+                                    {translation.summary && (
+                                        <p className="mt-2 text-sm text-muted leading-relaxed">
+                                            {translation.summary}
+                                        </p>
                                     )}
-                                </div>
-                            </Link>
-                        </motion.article>
-                    ))}
+
+                                    {translation.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 mt-4">
+                                            {translation.tags.map((tag) => (
+                                                <span
+                                                    key={tag}
+                                                    className="px-2.5 py-1 text-xs font-semibold rounded-md border border-line bg-chip text-ink-soft"
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <div className="mt-auto pt-6 flex items-center justify-between gap-4">
+                                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                                            {t("notes.readNote")}
+                                            <ArrowRight
+                                                size={15}
+                                                className="transition-transform duration-300 group-hover:translate-x-1"
+                                            />
+                                        </span>
+                                        {translation.downloads.length > 0 && (
+                                            <span
+                                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-soft"
+                                            >
+                                                <Download size={14} />
+                                                {translation.downloads.length}{" "}
+                                                {t(
+                                                    translation.downloads.length === 1
+                                                        ? "notes.fileOne"
+                                                        : "notes.file",
+                                                )}
+                                            </span>
+                                        )}
+                                    </div>
+                                </Link>
+                            </motion.article>
+                        );
+                    })}
                 </div>
             )}
         </div>

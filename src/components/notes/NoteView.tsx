@@ -9,20 +9,38 @@ import {
     Download,
     FileText,
 } from "lucide-react";
-import type { NoteSummary } from "@/lib/notes";
+import type { NoteLanguage, NoteSummary } from "@/lib/notes";
 import { useLanguage } from "@/context/LanguageContext";
 import { formatNoteDate } from "@/components/notes/format";
 
 interface NoteViewProps {
     note: NoteSummary;
-    children: React.ReactNode;
+    /** One server-rendered Markdown body per language; the switch picks one. */
+    bodies: Record<NoteLanguage, React.ReactNode>;
 }
 
-export const NoteView = ({ note, children }: NoteViewProps) => {
-    const { t, language } = useLanguage();
+export const NoteView = ({ note, bodies }: NoteViewProps) => {
+    const { t, language, setLanguage } = useLanguage();
+    const activeLanguage = note.languages.includes(language) ? language : note.languages[0];
+    const translation = note.translations[activeLanguage];
+
+    // `generateMetadata` runs on the server, which cannot see the saved client
+    // language. Apply the title after hydration paints so Next's server
+    // metadata does not immediately overwrite it. The cleanup runs on
+    // navigation, letting the next route own the title again.
+    React.useEffect(() => {
+        const title = `${translation.title} — L.D.Chinh`;
+        let frame = window.requestAnimationFrame(() => {
+            frame = window.requestAnimationFrame(() => {
+                document.title = title;
+            });
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [translation.title]);
 
     return (
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto" lang={activeLanguage}>
             <Link
                 href="/notes"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-primary transition-colors"
@@ -39,9 +57,31 @@ export const NoteView = ({ note, children }: NoteViewProps) => {
                 className="mt-6 md:mt-8"
             >
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted">
-                    <span className="chip px-2.5 py-1 font-semibold">
-                        {t(`notes.lang.${note.language}`)}
-                    </span>
+                    <div
+                        role="group"
+                        aria-label={t("notes.readIn")}
+                        className="inline-flex items-center gap-0.5 rounded-full border border-line bg-chip p-0.5"
+                    >
+                        {note.languages.map((noteLanguage) => {
+                            const isActive = noteLanguage === activeLanguage;
+
+                            return (
+                                <button
+                                    key={noteLanguage}
+                                    type="button"
+                                    onClick={() => setLanguage(noteLanguage)}
+                                    aria-pressed={isActive}
+                                    className={`px-3 py-1.5 text-xs font-bold rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+                                        isActive
+                                            ? "bg-gradient-to-r from-primary to-secondary text-[#fffaf4]"
+                                            : "text-ink-soft hover:text-primary"
+                                    }`}
+                                >
+                                    {t(`notes.lang.${noteLanguage}`)}
+                                </button>
+                            );
+                        })}
+                    </div>
                     <span className="inline-flex items-center gap-1.5">
                         <CalendarDays size={13} />
                         {t("notes.published")}
@@ -51,23 +91,23 @@ export const NoteView = ({ note, children }: NoteViewProps) => {
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                         <Clock3 size={13} />
-                        {note.readingMinutes} {t("notes.minRead")}
+                        {translation.readingMinutes} {t("notes.minRead")}
                     </span>
                 </div>
 
                 <h1 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-ink text-balance">
-                    {note.title}
+                    {translation.title}
                 </h1>
 
-                {note.summary && (
+                {translation.summary && (
                     <p className="mt-4 text-lg text-muted leading-relaxed text-balance">
-                        {note.summary}
+                        {translation.summary}
                     </p>
                 )}
 
-                {note.tags.length > 0 && (
+                {translation.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-5">
-                        {note.tags.map((tag) => (
+                        {translation.tags.map((tag) => (
                             <span
                                 key={tag}
                                 className="px-2.5 py-1 text-xs font-semibold rounded-md border border-line bg-chip text-ink-soft"
@@ -86,10 +126,10 @@ export const NoteView = ({ note, children }: NoteViewProps) => {
                 transition={{ duration: 0.6, delay: 0.05 }}
                 className="note-prose mt-10"
             >
-                {children}
+                {bodies[activeLanguage]}
             </motion.article>
 
-            {note.downloads.length > 0 && (
+            {translation.downloads.length > 0 && (
                 <motion.section
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +150,7 @@ export const NoteView = ({ note, children }: NoteViewProps) => {
                     <p className="mt-1 text-xs text-muted">{t("notes.downloadHint")}</p>
 
                     <ul className="mt-3 divide-y divide-line">
-                        {note.downloads.map((download) => {
+                        {translation.downloads.map((download) => {
                             const isExternal = download.href.startsWith("http");
 
                             return (

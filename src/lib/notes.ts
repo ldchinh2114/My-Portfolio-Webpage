@@ -9,24 +9,38 @@ export interface NoteDownload {
     meta?: string;
 }
 
-export interface NoteSummary {
-    slug: string;
-    title: string;
-    date: string;
-    summary: string;
+export interface NoteTranslationSummary {
     language: NoteLanguage;
+    title: string;
+    summary: string;
     tags: string[];
     downloads: NoteDownload[];
     readingMinutes: number;
 }
 
-export interface Note extends NoteSummary {
+export interface NoteTranslation extends NoteTranslationSummary {
     content: string;
+}
+
+export interface NoteSummary {
+    slug: string;
+    date: string;
+    languages: NoteLanguage[];
+    translations: Record<NoteLanguage, NoteTranslationSummary>;
+}
+
+export interface Note {
+    slug: string;
+    date: string;
+    languages: NoteLanguage[];
+    translations: Record<NoteLanguage, NoteTranslation>;
 }
 
 const NOTES_DIR = path.join(process.cwd(), "content", "notes");
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const SLUG_PATTERN = /^[a-z0-9-]+$/i;
+const FILE_PATTERN = /^([a-z0-9-]+)\.(vi|en)\.md$/;
+const LANGUAGES: NoteLanguage[] = ["vi", "en"];
 
 type FrontmatterValue = string | Array<string | Record<string, string>>;
 type Frontmatter = Record<string, FrontmatterValue>;
@@ -162,27 +176,50 @@ const estimateReadingMinutes = (body: string): number => {
     return Math.max(1, Math.round(words / 200));
 };
 
-const readNote = (slug: string): Note => {
-    const raw = readFileSync(path.join(NOTES_DIR, `${slug}.md`), "utf8");
+interface NoteFile extends NoteTranslation {
+    date: string;
+}
+
+/**
+ * A published note is a pair of files that share a slug and a date:
+ *   content/notes/<slug>.vi.md
+ *   content/notes/<slug>.en.md
+ * The language suffix is authoritative, so the reader switch never lies about
+ * which version is being rendered.
+ */
+const readNoteFile = (slug: string, language: NoteLanguage): NoteFile => {
+    const file = `${slug}.${language}.md`;
+    const filePath = path.join(NOTES_DIR, file);
+
+    if (!existsSync(filePath)) {
+        throw new Error(
+            `[notes] Missing content/notes/${file}. Every note needs both <slug>.vi.md and <slug>.en.md; add the missing translation or prefix both filenames with "_" to keep the note as a draft.`,
+        );
+    }
+
+    const raw = readFileSync(filePath, "utf8");
     const { data, body } = parseFrontmatter(raw);
     const title = readString(data, "title").trim();
     const date = readString(data, "date").trim();
+    const declaredLanguage = readString(data, "language").trim();
 
     if (!title) {
-        throw new Error(`[notes] content/notes/${slug}.md is missing a "title" in frontmatter.`);
+        throw new Error(`[notes] content/notes/${file} is missing a "title" in frontmatter.`);
     }
     if (!DATE_PATTERN.test(date)) {
+        throw new Error(`[notes] content/notes/${file} needs a "date" in YYYY-MM-DD format.`);
+    }
+    if (declaredLanguage && declaredLanguage !== language) {
         throw new Error(
-            `[notes] content/notes/${slug}.md needs a "date" in YYYY-MM-DD format.`,
+            `[notes] content/notes/${file} declares language "${declaredLanguage}" but its filename says "${language}". Drop the "language" key; the filename decides.`,
         );
     }
 
     return {
-        slug,
-        title,
         date,
+        language,
+        title,
         summary: readString(data, "summary").trim(),
-        language: readString(data, "language") === "en" ? "en" : "vi",
         tags: readStringList(data, "tags").map((tag) => tag.trim()).filter(Boolean),
         downloads: readDownloads(data),
         readingMinutes: estimateReadingMinutes(body),
@@ -190,34 +227,94 @@ const readNote = (slug: string): Note => {
     };
 };
 
+const toTranslation = (file: NoteFile): NoteTranslation => ({
+    language: file.language,
+    title: file.title,
+    summary: file.summary,
+    tags: file.tags,
+    downloads: file.downloads,
+    readingMinutes: file.readingMinutes,
+    content: file.content,
+});
+
+const readNote = (slug: string): Note => {
+    const vi = readNoteFile(slug, "vi");
+    const en = readNoteFile(slug, "en");
+
+    if (vi.date !== en.date) {
+        throw new Error(
+            `[notes] content/notes/${slug}.vi.md and ${slug}.en.md must share the same "date" (${vi.date} vs ${en.date}).`,
+        );
+    }
+
+    return {
+        slug,
+        date: vi.date,
+        languages: [...LANGUAGES],
+        translations: {
+            vi: toTranslation(vi),
+            en: toTranslation(en),
+        },
+    };
+};
+
 const listSlugs = (): string[] => {
     if (!existsSync(NOTES_DIR)) return [];
 
-    return readdirSync(NOTES_DIR)
-        .filter(
-            (file) =>
-                file.endsWith(".md") && !file.startsWith("_") && !file.startsWith("."),
-        )
-        .map((file) => file.slice(0, -3))
-        .filter((slug) => SLUG_PATTERN.test(slug));
+    const slugs = new Set<string>();
+
+    for (const file of readdirSync(NOTES_DIR)) {
+        if (!file.endsWith(".md") || file.startsWith("_") || file.startsWith(".")) continue;
+
+        const match = FILE_PATTERN.exec(file);
+        if (!match) {
+            throw new Error(
+                `[notes] content/notes/${file} must be named "<slug>.vi.md" or "<slug>.en.md".`,
+            );
+        }
+
+        const [, slug] = match;
+        if (!SLUG_PATTERN.test(slug)) {
+            throw new Error(
+                `[notes] "${slug}" is not a valid slug. Use lowercase letters, digits, and hyphens.`,
+            );
+        }
+
+        slugs.add(slug);
+    }
+
+    return [...slugs];
 };
 
-const toSummary = (note: Note): NoteSummary => ({
+const toTranslationSummary = (translation: NoteTranslation): NoteTranslationSummary => ({
+    language: translation.language,
+    title: translation.title,
+    summary: translation.summary,
+    tags: translation.tags,
+    downloads: translation.downloads,
+    readingMinutes: translation.readingMinutes,
+});
+
+/** Strips the Markdown bodies so a note can cross into the client boundary. */
+export const toNoteSummary = (note: Note): NoteSummary => ({
     slug: note.slug,
-    title: note.title,
     date: note.date,
-    summary: note.summary,
-    language: note.language,
-    tags: note.tags,
-    downloads: note.downloads,
-    readingMinutes: note.readingMinutes,
+    languages: note.languages,
+    translations: {
+        vi: toTranslationSummary(note.translations.vi),
+        en: toTranslationSummary(note.translations.en),
+    },
 });
 
 export const getAllNotes = (): NoteSummary[] =>
     listSlugs()
         .map(readNote)
-        .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
-        .map(toSummary);
+        .sort(
+            (a, b) =>
+                b.date.localeCompare(a.date) ||
+                a.translations.vi.title.localeCompare(b.translations.vi.title),
+        )
+        .map(toNoteSummary);
 
 export const getNote = (slug: string): Note | null => {
     if (!SLUG_PATTERN.test(slug) || !listSlugs().includes(slug)) return null;

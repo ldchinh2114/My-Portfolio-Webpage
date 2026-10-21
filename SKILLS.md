@@ -17,7 +17,7 @@ playbook lists the files to touch, the ordered steps, and how to verify.
 | [7](#7-update-metadata--seo) | Update metadata / SEO | Title, description, keywords, Open Graph. |
 | [8](#8-ship-a-change) | Ship a change | Every change, right before you report done. |
 | [9](#9-refresh-these-docs) | Refresh these docs | You changed a command, file, dependency, or pattern. |
-| [10](#10-add-or-edit-a-note) | Add or edit a note | Publishing Markdown, attaching downloads, or hiding a draft. |
+| [10](#10-add-or-edit-a-note) | Add or edit a note | Publishing the VI/EN Markdown pair, attaching downloads, or hiding a draft. |
 
 Global rules that apply to every playbook: keep the diff minimal, translate both
 languages, preserve personal facts, do not add dependencies for content work,
@@ -316,22 +316,24 @@ find drift between a doc and the code, fix the doc in the same change and say so
 
 **When:** publishing a note, fixing a typo in one, or attaching a file/folder.
 
-**Touch:** `content/notes/<slug>.md`, optionally `public/downloads/*`. No
-`LanguageContext.tsx` edit is needed unless you are changing the notes UI
-itself.
+**Touch:** `content/notes/<slug>.vi.md` + `content/notes/<slug>.en.md`,
+optionally `public/downloads/*`. No `LanguageContext.tsx` edit is needed unless
+you are changing the notes UI itself.
 
 ### Add
 
-1. Copy the template: `public/downloads/note-template.md` →
-   `content/notes/<slug>.md`. The filename **is** the URL:
-   `/notes/<slug>`. Use lowercase letters, digits, and hyphens.
-2. Fill the frontmatter:
+1. Create `content/notes/<slug>.vi.md` and `content/notes/<slug>.en.md`. The
+   shared filename (without `.vi` / `.en`) **is** the URL: `/notes/<slug>`. Use
+   lowercase letters, digits, and hyphens. The frontmatter shape and writing
+   rules are in `public/downloads/article-writing-guideline.{vi,en}.md` and
+   `docs/CONTENT.md` §10.
+2. Fill the frontmatter in both files. They share `date`; everything else is
+   per language:
    ```md
    ---
    title: "A short, specific title"
    date: "2026-10-21"
    summary: "One sentence shown on the card and in search results."
-   language: "vi"          # vi | en
    tags: ["Next.js", "AI"]
    downloads:
      - label: "Starter template"
@@ -339,31 +341,41 @@ itself.
        meta: "ZIP"
    ---
    ```
-3. Write the body in Markdown (GFM tables and task lists work). Headings start
-   at `##`; the page owns the `h1`. Code fences render on the dark ink surface.
+   There is no `language` key: the filename suffix decides. A leftover key that
+   disagrees with the filename fails the build.
+3. Write the body in Markdown, once per language (GFM tables and task lists
+   work). Headings start at `##`; the page owns the `h1`. Code fences render on
+   the dark ink surface.
 4. Files go in `public/downloads/` and are referenced as `/downloads/<file>`.
    A folder must be zipped first; a folder cannot be downloaded as a folder.
 5. `npm run build` — `generateStaticParams` creates `/notes/<slug>` and the
-   loader throws a clear `[notes]` error if `title`/`date` are missing or the
-   date is not `YYYY-MM-DD`.
+   loader throws a clear `[notes]` error if a file is missing, `title`/`date` are
+   missing, the date is not `YYYY-MM-DD`, or the two dates differ.
+
+The note page has a VI/EN switch that swaps title, summary, tags, downloads and
+the Markdown body; it uses the same language as the site toggle, so both stay
+in sync.
 
 ### Edit / rename / remove
 
-- Editing the body needs no other change. Keep the filename stable so existing
-  links keep working.
-- Renaming the file changes the public URL; update any inbound links.
-- Removing the file removes the route on the next build.
-- Prefix a filename with `_` to hide a note from the list and the build. This is
-  the draft mechanism — there is no draft flag in frontmatter.
+- Editing a body needs no other change. Keep the slug stable so existing links
+  keep working.
+- Keep both languages in sync when you edit a fact, a link or a download.
+- Renaming a file changes the public URL; rename both files and update any
+  inbound links.
+- Removing the route means removing both files.
+- Prefix both filenames with `_` to hide a note from the list and the build.
+  This is the draft mechanism — there is no draft flag in frontmatter. A note
+  with only one language is not a draft; it fails the build.
 - Note order is automatic (newest `date` first); do not add a manual order field.
 
 ### Verify
 
-- [ ] `/notes` shows the card with the right language badge, date, and reading
-      time.
-- [ ] Card opens `/notes/<slug>`; headings, lists, links, and code render.
+- [ ] `/notes` shows the card with the bilingual badge, date, and reading time,
+      and switches its title/summary with the site toggle.
+- [ ] Card opens `/notes/<slug>`; the VI/EN switch swaps the whole article
+      (title, summary, tags, downloads, body).
 - [ ] Every `downloads.href` returns 200 and has a sensible `label`/`meta`.
-- [ ] Both UI languages toggled; the note body stays in its authored language.
 - [ ] `npx tsc --noEmit`, `npm run lint`, `npm run build`.
 
 **Gotchas:** the renderer is `react-markdown` + `remark-gfm`, chosen over MDX so

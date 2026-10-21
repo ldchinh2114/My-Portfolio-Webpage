@@ -17,7 +17,7 @@ Live at <https://ldchinh.vercel.app>, deployed from `master` via Vercel.
 | Language | TypeScript, `strict: true` |
 | UI | React `19.2.3`, Tailwind CSS `v4` (CSS-first config), Framer Motion `12`, lucide-react icons |
 | Content | Bilingual **Vietnamese (default) / English**, one dictionary in `src/context/LanguageContext.tsx` |
-| Notes | Markdown files in `content/notes/`, rendered by `react-markdown` + `remark-gfm` |
+| Notes | Paired Markdown files in `content/notes/` (`<slug>.vi.md` + `<slug>.en.md`), rendered by `react-markdown` + `remark-gfm` |
 | Hosting | Vercel, with `@vercel/analytics` |
 | Tests | None yet. `@playwright/test` is installed but there is no config and no specs |
 
@@ -48,7 +48,7 @@ must pass before you call work "done". There is no formatter configured.
 ```
 AGENTS.md                  ← you are here
 SKILLS.md                  ← step-by-step recipes for common changes
-content/notes/             ← one .md file per note (frontmatter + body)
+content/notes/             ← one .vi.md + one .en.md per note (frontmatter + body)
 docs/                      ← deeper reference (start at docs/README.md)
 public/downloads/          ← files linked from note frontmatter
 src/
@@ -83,8 +83,9 @@ next.config.ts             security headers + CSP
    a browser editor, login, or database.
 2. **Every user-visible UI string is translated.** Strings go through
    `t("some.key")` and the key **must exist in both `vi` and `en`**. A missing
-   key silently renders the raw key name. Note bodies are the exception: each
-   note is authored in one language and tagged `vi`/`en`. See `docs/I18N.md`.
+   key silently renders the raw key name. Note bodies are the exception: every
+   note is written twice, as `<slug>.vi.md` and `<slug>.en.md`, and readers
+   switch language on the note page. See `docs/I18N.md`.
 3. **Never invent or "improve" personal facts.** Links, email, phone, project
    claims, GitHub URLs, and bio sentences are the owner's. Change them only
    when explicitly asked, and change the same value everywhere it is duplicated.
@@ -164,8 +165,9 @@ Before reporting completion:
 - [ ] Keyboard focus still visible; decorative layers still `aria-hidden`
 - [ ] No new dependency, external origin, or CSP entry without saying so
 - [ ] Personal facts (links, email, claims) unchanged unless that was the task
-- [ ] If a note was added: list card opens the detail page, Markdown renders,
-      and every `downloads.href` returns 200
+- [ ] If a note was added: both `<slug>.vi.md` and `<slug>.en.md` exist, the
+      language switch renders both versions, Markdown renders, and every
+      `downloads.href` returns 200
 
 If a check could not be run, say so explicitly instead of implying it passed.
 

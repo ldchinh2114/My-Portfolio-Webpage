@@ -2,11 +2,10 @@
 title: "Vì sao mình thêm trang Notes"
 date: "2026-10-21"
 summary: "Một chỗ ổn định để lưu ghi chú, bài viết ngắn và tệp tải xuống thay vì để rải rác trong tin nhắn."
-language: "vi"
 tags: ["Notes", "Markdown"]
 downloads:
-  - label: "Mẫu ghi chú Markdown"
-    href: "/downloads/note-template.md"
+  - label: "Hướng dẫn viết bài"
+    href: "/downloads/article-writing-guideline.vi.md"
     meta: "MD"
 ---
 
@@ -18,7 +17,7 @@ Mình thêm trang **Notes** để có một chỗ ổn định cho những ghi c
 - Cách mình dùng AI trong quy trình làm việc.
 - Nhật ký xây dựng game đầu tiên.
 
-Mỗi ghi chú chỉ có **một ngôn ngữ** — tiếng Việt hoặc tiếng Anh — và giữ nguyên như lúc viết, không chạy qua máy dịch.
+Mỗi ghi chú có **hai bản** — tiếng Việt và tiếng Anh — và bạn đổi ngay trên đầu bài viết. Cả hai bản đều do mình viết, không chạy qua máy dịch.
 
 ## Định dạng
 
@@ -31,4 +30,4 @@ const note = {
 };
 ```
 
-Nếu muốn viết bài mới, mẫu Markdown nằm trong phần tải xuống bên dưới.
+Nếu muốn viết bài mới, hướng dẫn viết bài nằm trong phần tải xuống bên dưới.

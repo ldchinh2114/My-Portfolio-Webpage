@@ -35,13 +35,15 @@ Request /notes
 
 Request /notes/<slug>  (prerendered by generateStaticParams)
   └─ src/app/notes/[slug]/page.tsx         (Server)
-       └─ <NoteView note={summary}>        (Client: translated chrome)
-            └─ <NoteMarkdown content={...} />  (Server: Markdown → HTML)
+       └─ <NoteView note={summary} bodies={...}>  (Client: translated chrome + switch)
+            ├─ <NoteMarkdown content={vi} />       (Server: Markdown → HTML)
+            └─ <NoteMarkdown content={en} />       (Server: Markdown → HTML)
 ```
 
-The Markdown body stays server-rendered and is passed into the client
-`NoteView` as `children`, so `react-markdown` is not shipped to the browser.
-Only note summaries (no body) cross the boundary.
+Both Markdown bodies stay server-rendered and are passed into the client
+`NoteView` as props, so `react-markdown` is not shipped to the browser. Only
+note summaries (no body strings) and the two rendered bodies cross the boundary;
+the VI/EN switch decides which body is mounted.
 
 - **Server components:** `layout.tsx`, `page.tsx`, and everything under
   `src/app/notes/`. The home page reads no data; the notes pages read
@@ -74,8 +76,8 @@ components take serialisable note data as props.
 | `Contact` | `src/components/Contact.tsx` | none | Heading, quote, 4 social cards (GitHub, Facebook, Zalo, Email). |
 | `Footer` | `src/components/Footer.tsx` | none | Brand + translated credit line + the same 4 social icons. |
 | `SiteBackground` | `src/components/SiteBackground.tsx` | none | The two fixed background layers, shared by `/` and `/notes/*` so the look never drifts. |
-| `NotesList` | `src/components/notes/NotesList.tsx` | none | Client component: translated header, one column of note cards, empty state, dates via `Intl.DateTimeFormat`. |
-| `NoteView` | `src/components/notes/NoteView.tsx` | none | Client chrome for a note: back links, language/date/reading-time meta, tags, prose wrapper, downloads card after the body. Receives the server-rendered Markdown as `children`. |
+| `NotesList` | `src/components/notes/NotesList.tsx` | none | Client component: translated header, one column of note cards (title/summary/tags from the active language), empty state, dates via `Intl.DateTimeFormat`. |
+| `NoteView` | `src/components/notes/NoteView.tsx` | none (language lives in `LanguageContext`) | Client chrome for a note: back links, VI/EN switch, date/reading-time meta, tags, prose wrapper, downloads card after the body. Receives both server-rendered Markdown bodies as `bodies` and picks one from the site language. |
 | `NoteMarkdown` | `src/components/notes/NoteMarkdown.tsx` | none | Server component: `react-markdown` + `remark-gfm`; external links get `target="_blank"` and `rel="noopener noreferrer"`. |
 
 Route files in `src/app/notes/` are default exports and stay server-side.
@@ -96,13 +98,15 @@ There is no data layer, no fetch, and no API. Content comes from four places:
    `skills`/`stats`/`platforms` built inline from `t()` calls.
 3. **Hardcoded literals** — numeric stat values (`"3"`, `"10+"`, `"5+"`),
    project tags (`["C#", ".NET"]`), URLs, metadata in `layout.tsx`.
-4. **Markdown files** — `content/notes/*.md`, read at build time by
-   `src/lib/notes.ts`. Each file has a frontmatter block (`title`, `date`,
-   `summary`, `language`, `tags`, optional `downloads`) followed by the body.
-   `<slug>` is the filename, files starting with `_` are ignored (drafts), and
-   `getAllNotes()` sorts newest first. `getNote()` rejects unknown or unsafe
-   slugs before touching the filesystem. Note bodies are not in the translation
-   dictionary: each note is written in one language and tagged `vi` or `en`.
+4. **Markdown files** — `content/notes/*.vi.md` and `*.en.md`, read at build
+   time by `src/lib/notes.ts`. A note is a pair of files sharing a slug and a
+   `date`, with per-language `title`, `summary`, `tags`, optional `downloads`
+   and body. The language suffix in the filename decides the language; a
+   missing half or mismatched dates fail the build. Files starting with `_` are
+   ignored (drafts), and `getAllNotes()` sorts newest first. `getNote()` rejects
+   unknown or unsafe slugs before touching the filesystem. Note bodies are not
+   in the translation dictionary: both languages are authored content and the
+   note page's switch chooses which one to render.
 
 Language state:
 

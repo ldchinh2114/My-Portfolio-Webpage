@@ -137,6 +137,8 @@ const translations = {
         "notes.downloadHint": "Tệp đính kèm của ghi chú này.",
         "notes.lang.vi": "Tiếng Việt",
         "notes.lang.en": "English",
+        "notes.bilingual": "Song ngữ",
+        "notes.readIn": "Đọc bằng",
 
         // Projects Details
         "projects.task.title": "Quản Lý Công Việc",
@@ -277,6 +279,8 @@ const translations = {
         "notes.downloadHint": "Files attached to this note.",
         "notes.lang.vi": "Vietnamese",
         "notes.lang.en": "English",
+        "notes.bilingual": "Bilingual",
+        "notes.readIn": "Read in",
 
         // Projects Details
         "projects.task.title": "Task Management",
