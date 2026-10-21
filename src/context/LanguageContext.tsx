@@ -101,12 +101,13 @@ const translations = {
         // Projects
         "projects.title": "cá nhân",
         "projects.featured": "Dự án",
-        "projects.subtitle": "Những sản phẩm tôi đã xây dựng, từ công cụ desktop đến ứng dụng web.",
+        "projects.subtitle": "Những sản phẩm tôi đã xây dựng, từ công cụ desktop đến ứng dụng web và mobile.",
         "projects.viewCode": "Xem Code",
         "projects.liveDemo": "Demo Trực Tiếp",
         "projects.kind": "Loại",
         "projects.kind.desktop": "Desktop App",
         "projects.kind.web": "Web App",
+        "projects.kind.mobile": "Mobile App",
         "projects.kind.game": "Game (AI)",
 
         // Contact
@@ -121,8 +122,8 @@ const translations = {
         "projects.task.desc": "Ứng dụng theo dõi nhiệm vụ toàn diện được thiết kế để tối ưu hóa năng suất cá nhân và quy trình làm việc của dự án.",
         "projects.recorder.title": "Ghi Lại Thao Tác",
         "projects.recorder.desc": "Công cụ tự động ghi và phát lại các tương tác của người dùng, hữu ích cho kiểm thử tự động và tạo macro.",
-        "projects.extractor.title": "Text Extractor",
-        "projects.extractor.desc": "Công cụ mạnh mẽ giúp trích xuất văn bản từ hình ảnh hoặc vùng chụp trên màn hình. Hỗ trợ phím tắt PrtSc và đa ngôn ngữ.",
+        "projects.helmet.title": "HELMO - Ứng Dụng Mũ Bảo Hiểm",
+        "projects.helmet.desc": "Ứng dụng mua mũ bảo hiểm trực tuyến xây dựng bằng Flutter và Riverpod, với trang chủ, danh mục, giỏ hàng, tìm kiếm và yêu thích.",
         "projects.multitool.title": "MultiTool",
         "projects.multitool.desc": "Bộ công cụ đa năng được xây dựng với Next.js, React và Tailwind CSS.",
         "projects.game.title": "Game Đầu Tiên Của Tôi",
@@ -219,12 +220,13 @@ const translations = {
         // Projects
         "projects.title": "Projects",
         "projects.featured": "Personal",
-        "projects.subtitle": "Things I have shipped, from desktop utilities to web apps.",
+        "projects.subtitle": "Things I have shipped, from desktop utilities to web and mobile apps.",
         "projects.viewCode": "View Code",
         "projects.liveDemo": "Live Demo",
         "projects.kind": "Type",
         "projects.kind.desktop": "Desktop App",
         "projects.kind.web": "Web App",
+        "projects.kind.mobile": "Mobile App",
         "projects.kind.game": "Game (AI)",
 
         // Contact
@@ -239,8 +241,8 @@ const translations = {
         "projects.task.desc": "A comprehensive task tracking application designed to streamline personal productivity and project workflows.",
         "projects.recorder.title": "User Action Recorder",
         "projects.recorder.desc": "Automated tool for recording and replaying user interactions, useful for automated testing and macro creation.",
-        "projects.extractor.title": "Text Extractor",
-        "projects.extractor.desc": "A powerful tool to extract text from images or screen captures. Supports PrtSc shortcut and multi-language recognition.",
+        "projects.helmet.title": "HELMO - Helmet Shop Mobile App",
+        "projects.helmet.desc": "An online helmet shop app built with Flutter and Riverpod, featuring home, catalog, cart, search and wishlist.",
         "projects.multitool.title": "MultiTool",
         "projects.multitool.desc": "A multi-purpose tool built with Next.js, React, and Tailwind CSS.",
         "projects.game.title": "My First Game",

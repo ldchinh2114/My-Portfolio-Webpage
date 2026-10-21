@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink, Monitor, Globe, Gamepad2, Sparkles } from "lucide-react";
+import { Github, ExternalLink, Monitor, Smartphone, Globe, Gamepad2, Sparkles } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const projects = [
@@ -17,14 +17,14 @@ const projects = [
         demo: null,
     },
     {
-        titleKey: "projects.extractor.title",
-        descKey: "projects.extractor.desc",
-        kindKey: "projects.kind.desktop",
-        tags: ["C#", "WinForms", "OCR"],
-        icon: Monitor,
+        titleKey: "projects.helmet.title",
+        descKey: "projects.helmet.desc",
+        kindKey: "projects.kind.mobile",
+        tags: ["Flutter", "Riverpod", "GoRouter"],
+        icon: Smartphone,
         cover: "from-[#f4e8cf] via-[#fbf5e9] to-[#fffdf9]",
         iconColor: "text-[#9a7020]",
-        github: "https://github.com/ldchinh2114/Text-Extractor",
+        github: "https://github.com/ldchinh2114/HelmetMobileApp",
         demo: null,
     },
     {
