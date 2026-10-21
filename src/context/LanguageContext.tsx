@@ -16,6 +16,7 @@ const translations = {
         "nav.about": "Giới Thiệu",
         "nav.skills": "Kỹ Năng",
         "nav.projects": "Dự Án",
+        "nav.notes": "Ghi Chú",
         "nav.contact": "Liên Hệ",
 
         // Hero
@@ -117,6 +118,26 @@ const translations = {
         "contact.footer": "Được xây dựng với Next.js + AI — Thiết kế và lập trình bởi L.D.Chinh",
         "contact.findMe": "Tìm tôi online",
 
+        // Notes
+        "notes.eyebrow": "Ghi chép",
+        "notes.title": "Ghi chú",
+        "notes.subtitle":
+            "Những ghi chú, bài viết ngắn và tệp tải xuống mình chia sẻ trong lúc xây dựng sản phẩm.",
+        "notes.count": "ghi chú",
+        "notes.countOne": "ghi chú",
+        "notes.file": "tệp",
+        "notes.fileOne": "tệp",
+        "notes.empty.title": "Chưa có ghi chú nào",
+        "notes.empty.desc": "Mình sẽ đăng bài viết và tài liệu ở đây sớm.",
+        "notes.back": "Tất cả ghi chú",
+        "notes.readNote": "Đọc ghi chú",
+        "notes.minRead": "phút đọc",
+        "notes.published": "Đăng ngày",
+        "notes.downloads": "Tải xuống",
+        "notes.downloadHint": "Tệp đính kèm của ghi chú này.",
+        "notes.lang.vi": "Tiếng Việt",
+        "notes.lang.en": "English",
+
         // Projects Details
         "projects.task.title": "Quản Lý Công Việc",
         "projects.task.desc": "Ứng dụng theo dõi nhiệm vụ toàn diện được thiết kế để tối ưu hóa năng suất cá nhân và quy trình làm việc của dự án.",
@@ -135,6 +156,7 @@ const translations = {
         "nav.about": "About",
         "nav.skills": "Skills",
         "nav.projects": "Projects",
+        "nav.notes": "Notes",
         "nav.contact": "Contact",
 
         // Hero
@@ -236,6 +258,26 @@ const translations = {
         "contact.footer": "Built with Next.js + AI — Designed & coded by L.D.Chinh",
         "contact.findMe": "Find me online",
 
+        // Notes
+        "notes.eyebrow": "Writing",
+        "notes.title": "Notes",
+        "notes.subtitle":
+            "Short notes, write-ups and downloadable files I share while building things.",
+        "notes.count": "notes",
+        "notes.countOne": "note",
+        "notes.file": "files",
+        "notes.fileOne": "file",
+        "notes.empty.title": "No notes yet",
+        "notes.empty.desc": "I'll publish notes and files here soon.",
+        "notes.back": "All notes",
+        "notes.readNote": "Read note",
+        "notes.minRead": "min read",
+        "notes.published": "Published",
+        "notes.downloads": "Downloads",
+        "notes.downloadHint": "Files attached to this note.",
+        "notes.lang.vi": "Vietnamese",
+        "notes.lang.en": "English",
+
         // Projects Details
         "projects.task.title": "Task Management",
         "projects.task.desc": "A comprehensive task tracking application designed to streamline personal productivity and project workflows.",
@@ -258,6 +300,9 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     useEffect(() => {
         const savedLang = localStorage.getItem("language") as Language;
         if (savedLang) {
+            // One-time read after hydration: the first render must match the
+            // server's default ("vi"), then the saved choice is applied.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLanguage(savedLang);
         }
     }, []);
