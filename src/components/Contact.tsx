@@ -1,86 +1,73 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, Phone, MapPin } from "lucide-react";
+import { Github, Facebook, Mail, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export const Contact = () => {
     const { t } = useLanguage();
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        message: ""
-    });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Handle form submission logic here
-        console.log(formData);
-        alert("Message sent! (Simulation)");
-    };
+    const socials = [
+        { icon: Github, href: "https://github.com/ldchinh2114", label: "GitHub" },
+        { icon: Facebook, href: "https://www.facebook.com/LeeChiinhh", label: "Facebook" },
+        { icon: MessageCircle, href: "https://zalo.me/84707166199", label: "Zalo" },
+        { icon: Mail, href: "mailto:chinhle6030@gmail.com", label: "Email" },
+    ];
 
     return (
-        <section id="contact" className="py-32 relative text-center px-6">
-            <div className="container mx-auto max-w-5xl">
+        <section id="contact" className="relative py-20 md:py-28 px-4 md:px-6 overflow-hidden">
+            <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#c9b89a]/60 to-transparent" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[720px] h-[300px] warm-glow" />
+            </div>
+
+            <div className="max-w-4xl mx-auto">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 26 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-center"
+                >
+                    <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight uppercase leading-[1.05]">
+                        {t("contact.title")}{" "}
+                        <span className="accent-text">{t("contact.subtitle")}</span>
+                    </h2>
+                    <p className="mt-6 text-base md:text-lg text-muted max-w-2xl mx-auto leading-relaxed italic">
+                        &ldquo;{t("contact.quote")}&rdquo;
+                    </p>
+                </motion.div>
+
+                {/* Social links */}
+                <motion.div
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.7, delay: 0.12 }}
+                    className="mt-14"
                 >
-                    <h2 className="text-5xl md:text-7xl font-extrabold mb-12 tracking-tighter uppercase text-gray-950 leading-tight">
-                        {t("contact.title")} <br />
-                        <span className="text-gray-400">{t("contact.subtitle")}</span>
-                    </h2>
-
-                    <p className="text-xl md:text-2xl font-light text-gray-400 max-w-3xl mx-auto leading-relaxed italic transform-gpu">
-                        "{t("contact.quote")}"
+                    <p className="text-sm md:text-base font-bold tracking-wide text-muted text-center mb-6">
+                        {t("contact.findMe")}
                     </p>
 
-                    <div className="mt-20 flex justify-center flex-wrap gap-10 md:gap-16 font-bold uppercase text-xs tracking-[0.2em] text-gray-500">
-                        <a
-                            href="https://github.com/ldchinh2114"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gray-950 transition-colors"
-                        >
-                            GitHub
-                        </a>
-                        <a
-                            href="https://www.facebook.com/LeeChiinhh"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gray-950 transition-colors"
-                        >
-                            Facebook
-                        </a>
-                        <a
-                            href="https://zalo.me/84707166199"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gray-950 transition-colors"
-                        >
-                            Zalo
-                        </a>
-                        <a
-                            href="https://www.linkedin.com/in/ldchinh2114"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gray-950 transition-colors"
-                        >
-                            LinkedIn
-                        </a>
-                        <a
-                            href="mailto:chinhle6030@gmail.com"
-                            className="hover:text-gray-950 transition-colors"
-                        >
-                            Email
-                        </a>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {socials.map((social) => (
+                            <a
+                                key={social.label}
+                                href={social.href}
+                                target={social.href.startsWith("mailto") ? undefined : "_blank"}
+                                rel="noopener noreferrer"
+                                className="group glass-card rounded-2xl px-4 py-6 flex flex-col items-center gap-3 hover:border-primary/50 hover:-translate-y-1 transition-all duration-300"
+                            >
+                                <span className="p-3 rounded-xl bg-chip text-ink-soft group-hover:text-primary group-hover:bg-[#c2571f]/10 transition-colors">
+                                    <social.icon size={22} />
+                                </span>
+                                <span className="text-sm font-semibold text-ink-soft group-hover:text-primary transition-colors">
+                                    {social.label}
+                                </span>
+                            </a>
+                        ))}
                     </div>
-
-                    <p className="mt-32 text-gray-400 text-[10px] uppercase tracking-[0.5em] opacity-60">
-                        © 2026 L.D.Chinh — MADE WITH PASSION
-                    </p>
                 </motion.div>
             </div>
         </section>

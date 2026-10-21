@@ -1,83 +1,119 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink, Folder } from "lucide-react";
+import { Github, ExternalLink, Monitor, Globe, Gamepad2, Sparkles } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const projects = [
     {
         titleKey: "projects.recorder.title",
         descKey: "projects.recorder.desc",
+        kindKey: "projects.kind.desktop",
         tags: ["C#", ".NET", "Windows API"],
-        color: "from-purple-500 to-indigo-700",
-        image: "/action-recorder.jpg",
+        icon: Monitor,
+        cover: "from-[#f6e3d2] via-[#fbf1e6] to-[#fffdf9]",
+        iconColor: "text-[#b8551f]",
         github: "https://github.com/ldchinh2114/User-Action-Recorder",
-        demo: "#"
+        demo: null,
     },
     {
         titleKey: "projects.extractor.title",
         descKey: "projects.extractor.desc",
-        tags: ["C#", "Winforms"],
-        color: "from-blue-500 to-cyan-700",
-        image: "/text-extractor.jpg",
+        kindKey: "projects.kind.desktop",
+        tags: ["C#", "WinForms", "OCR"],
+        icon: Monitor,
+        cover: "from-[#f4e8cf] via-[#fbf5e9] to-[#fffdf9]",
+        iconColor: "text-[#9a7020]",
         github: "https://github.com/ldchinh2114/Text-Extractor",
-        demo: "#"
+        demo: null,
     },
     {
         titleKey: "projects.multitool.title",
         descKey: "projects.multitool.desc",
+        kindKey: "projects.kind.web",
         tags: ["Next.js", "React", "Tailwind CSS"],
-        color: "from-green-500 to-teal-700",
-        image: "/multitool.jpg",
+        icon: Globe,
+        cover: "from-[#efe0d2] via-[#f8efe6] to-[#fffdf9]",
+        iconColor: "text-[#a8452c]",
         github: "https://github.com/ldchinh2114/multitool",
-        demo: "https://ldchinh-multitool.vercel.app/"
-    }
+        demo: "https://ldchinh-multitool.vercel.app/",
+    },
+    {
+        titleKey: "projects.game.title",
+        descKey: "projects.game.desc",
+        kindKey: "projects.kind.game",
+        tags: ["AI", "Game Dev", "Unity"],
+        icon: Gamepad2,
+        cover: "from-[#f3dfd2] via-[#faeee4] to-[#fffdf9]",
+        iconColor: "text-[#8a6d2f]",
+        github: null,
+        demo: null,
+        badge: true,
+    },
 ];
 
 export const Projects = () => {
     const { t } = useLanguage();
 
     return (
-        <section id="projects" className="py-12 relative z-10">
-            <div className="container mx-auto px-4">
-                <motion.h2
+        <section id="projects" className="relative py-20 md:py-28 px-4 md:px-6 overflow-hidden">
+            <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#c9b89a]/60 to-transparent" />
+                <div className="absolute top-1/4 left-0 w-[440px] h-[440px] warm-glow" />
+            </div>
+
+            <div className="max-w-6xl mx-auto">
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-4xl md:text-5xl font-extrabold text-center mb-16 tracking-tight text-gray-950 uppercase"
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7 }}
+                    className="text-center mb-14"
                 >
-                    {t("projects.featured")} <span className="text-gray-400">{t("projects.title")}</span>
-                </motion.h2>
+                    <h2 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tight">
+                        {t("projects.featured")}{" "}
+                        <span className="accent-text">{t("projects.title")}</span>
+                    </h2>
+                    <p className="mt-4 text-muted max-w-xl mx-auto text-balance">
+                        {t("projects.subtitle")}
+                    </p>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {projects.map((project, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
+                        <motion.article
+                            key={project.titleKey}
+                            initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="glass-card rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 border border-gray-200 group"
+                            viewport={{ once: true, margin: "-60px" }}
+                            transition={{ delay: index * 0.08, duration: 0.6 }}
+                            className="group relative glass-card rounded-2xl overflow-hidden hover:border-primary/45 transition-colors"
                         >
-                            <div className="relative overflow-hidden h-48">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                                <img
-                                    src={project.image}
-                                    alt={t(project.titleKey)}
-                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                            <div
+                                className={`relative h-36 bg-gradient-to-br ${project.cover} flex items-center justify-center`}
+                            >
+                                <div className="absolute inset-0 grid-bg opacity-70" />
+                                <project.icon
+                                    size={52}
+                                    strokeWidth={1.2}
+                                    className={`relative ${project.iconColor} transition-transform duration-500 group-hover:scale-110`}
                                 />
-                                <div className="absolute bottom-4 left-4 z-20">
-                                    <span className="px-3 py-1 text-xs font-semibold bg-purple-500 text-white rounded-full">
-                                        {project.tags[0]}
+                                <span className="absolute top-4 left-4 text-xs font-semibold tracking-wide px-3 py-1.5 rounded-full border border-line bg-white/80 text-ink-soft">
+                                    {t(project.kindKey)}
+                                </span>
+                                {project.badge && (
+                                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 text-xs font-semibold tracking-wide px-3 py-1.5 rounded-full bg-[#8a6d2f]/12 text-[#7a5f26] border border-[#8a6d2f]/30">
+                                        <Sparkles size={11} />
+                                        {t("about.p.game.badge")}
                                     </span>
-                                </div>
+                                )}
                             </div>
 
                             <div className="p-6">
-                                <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-500 transition-colors">
+                                <h3 className="text-xl font-bold mb-2 text-ink group-hover:text-primary transition-colors">
                                     {t(project.titleKey)}
                                 </h3>
-                                <p className="text-gray-600 mb-6">
+                                <p className="text-sm text-muted leading-relaxed mb-5">
                                     {t(project.descKey)}
                                 </p>
 
@@ -85,37 +121,44 @@ export const Projects = () => {
                                     {project.tags.map((tag, i) => (
                                         <span
                                             key={i}
-                                            className="px-2 py-1 text-xs rounded-md bg-gray-100 text-gray-600 border border-gray-200"
+                                            className="px-2.5 py-1 text-xs font-semibold rounded-md border border-line bg-chip text-ink-soft"
                                         >
                                             {tag}
                                         </span>
                                     ))}
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                    <a
-                                        href={project.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-purple-500 transition-colors"
-                                    >
-                                        <Github size={18} />
-                                        {t("projects.viewCode")}
-                                    </a>
-                                    {project.demo !== "#" && (
+                                <div className="flex items-center gap-5">
+                                    {project.github && (
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-primary transition-colors"
+                                        >
+                                            <Github size={16} />
+                                            {t("projects.viewCode")}
+                                        </a>
+                                    )}
+                                    {project.demo && (
                                         <a
                                             href={project.demo}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-purple-500 transition-colors"
+                                            className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-primary transition-colors"
                                         >
-                                            <ExternalLink size={18} />
+                                            <ExternalLink size={16} />
                                             {t("projects.liveDemo")}
                                         </a>
                                     )}
+                                    {!project.github && !project.demo && (
+                                        <span className="text-xs font-semibold tracking-wide text-[#8a6d2f]">
+                                            {t("about.p.game.badge")}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                        </motion.div>
+                        </motion.article>
                     ))}
                 </div>
             </div>
